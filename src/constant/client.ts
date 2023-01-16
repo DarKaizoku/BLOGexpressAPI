@@ -2,6 +2,7 @@ import { config } from "dotenv";
 import { Client } from "pg";
 config();
 
+
 const client = new Client({
     user: process.env.DB_USERNAME,
     host: process.env.DB_HOST,
