@@ -12,7 +12,7 @@ usersRouter.post('/register', usersController.register);
 
 usersRouter.post('/login', async (req, res) => {
     try {
-
+        
     } catch (error) {
         console.log(error);
 

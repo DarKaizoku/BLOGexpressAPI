@@ -2,15 +2,12 @@
 import * as express from 'express';
 import * as dotenv from 'dotenv';
 import { JwtPayload } from 'jsonwebtoken';
-<<<<<<< HEAD
 import usersRouter from './routes/usersRouter';
 dotenv.config();
 
 
 
-=======
 import articlesRouter from './routes/articlesRouter';
->>>>>>> fee8e887e87c8f8f5e43943c5575a9951e2e912f
 
 declare global
 {
@@ -61,15 +58,9 @@ app.use(function (req, res, next)
 /************************************************
    * Add the route here
    */
-<<<<<<< HEAD
-app.use('/api/users',usersRouter);
-
-
-=======
 app.use('/api/articles', articlesRouter);
-//app.use('/api/users', usersRouter);
+app.use('/api/users', usersRouter);
 //app.use('/api/comment', commentsRouter);
->>>>>>> fee8e887e87c8f8f5e43943c5575a9951e2e912f
 
 // Bind express server on port 8080
 app.listen(port, () =>
