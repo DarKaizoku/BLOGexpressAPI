@@ -2,6 +2,11 @@
 import * as express from 'express';
 import * as dotenv from 'dotenv';
 import { JwtPayload } from 'jsonwebtoken';
+import usersRouter from './routes/usersRouter';
+dotenv.config();
+
+
+
 
 declare global
 {
@@ -52,6 +57,7 @@ app.use(function (req, res, next)
 /************************************************
    * Add the route here
    */
+app.use('/api/users',usersRouter);
 
 
 
