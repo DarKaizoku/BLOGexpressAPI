@@ -8,10 +8,13 @@ import { TArticles } from "../types/TArticles";
 const articlesRouter = Router();
 const articlesController = new ArticlesController;
 
+// changer la valeur de l'id au niveau de articlesServices ligne 33 !!!!!!
 
 articlesRouter.get('/', articlesController.getAllArticles);
 
 articlesRouter.get('/:id', articlesController.getOneArticle);
+
+articlesRouter.post('/', articlesController.postArticle);
 
 
 export default articlesRouter;

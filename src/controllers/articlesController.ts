@@ -1,6 +1,8 @@
 
 import { Request, Response } from "express";
+import { QueryResult } from "pg";
 import { ArticlesServices } from "../services/articlesServices";
+import { TArticles } from "../types/TArticles";
 
 
 const articlesServices = new ArticlesServices;
@@ -39,7 +41,7 @@ export class ArticlesController {
             console.log(err);
             res.status(500).json(
                 {
-                    status: "FAIL",
+                    status: "ERROR",
                     message: "erreur serveur",
                     data: null
                 })
@@ -80,7 +82,7 @@ export class ArticlesController {
                 console.log(err);
                 res.status(500).json(
                     {
-                        status: "FAIL",
+                        status: "ERROR",
                         message: "erreur serveur",
                         data: null
                     })
@@ -95,6 +97,59 @@ export class ArticlesController {
                     data: null
                 });
         }
-    }
+    };
+
+    async postArticle(req: Request, res: Response) {
+
+        const titre: string = req.body.titre;
+        const content: string = req.body.content;
+
+        if (titre === undefined || content === undefined) {
+
+            res.status(400).json(
+                {
+                    status: "FAIL",
+                    message: "valeur manquante",
+                    data: null
+                }
+            )
+        } else {
+
+            try {
+
+                const postArticle = await articlesServices.postArticle(titre, content); 
+
+                if (postArticle === undefined) {
+
+                    res.status(404).json(
+                        {
+                            status: "FAIL",
+                            message: "Aucun article trouvé",
+                            data: null
+                        })
+
+                } else {
+
+                res.status(200).json(
+                    {
+                        status: "SUCCESS",
+                        message: "Article publié !",
+                        data: postArticle
+                    }
+                ) }
+            }
+            catch (err) {
+                console.log(err);
+                res.status(500).json(
+                    {
+                        status: "ERROR",
+                        message: "erreur serveur",
+                        data: null
+                    }
+                )
+
+            }
+        }
+    };
 
 }
