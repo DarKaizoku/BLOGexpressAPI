@@ -8,17 +8,13 @@ import { TArticles } from "../types/TArticles";
 const articlesRouter = Router();
 const articlesController = new ArticlesController;
 
+// changer la valeur de l'id au niveau de articlesServices ligne 33 !!!!!!
 
 articlesRouter.get('/', articlesController.getAllArticles);
 
-/* articlesRouter.get('/:id', (req, res) => {
+articlesRouter.get('/:id', articlesController.getOneArticle);
 
-    const articleId = req.params.id
+articlesRouter.post('/', articlesController.postArticle);
 
-    const 
-
-
-
-}) */
 
 export default articlesRouter;
