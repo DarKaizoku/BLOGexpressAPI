@@ -11,14 +11,7 @@ const articlesController = new ArticlesController;
 
 articlesRouter.get('/', articlesController.getAllArticles);
 
-articlesRouter.get('/:id', (req, res) => {
+articlesRouter.get('/:id', articlesController.getOneArticle);
 
-    const articleId = req.params.id
-
-    const 
-
-
-
-})
 
 export default articlesRouter;
