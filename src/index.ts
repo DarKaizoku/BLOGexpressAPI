@@ -27,6 +27,7 @@ app.use(express.json());
 
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
+<<<<<<< HEAD
         res.setHeader("authorization", "");
         // Website you wish to allow to connect
         res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -46,6 +47,23 @@ app.use(function (req, res, next) {
         // Set to true if you need the website to include cookies in the requests sent
         // to the API (e.g. in case you use sessions)
         res.setHeader("Access-Control-Allow-Credentials", "true");
+=======
+    res.setHeader('authorization', '');
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+
+    // Request methods you wish to allow
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+    );
+
+    // Request headers you wish to allow
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+>>>>>>> 36e416fdb92a57c38050f402e04f6a2fbbdec340
 
         // Pass to next layer of middleware
         next();
@@ -54,13 +72,24 @@ app.use(function (req, res, next) {
 /************************************************
  * Add the route here
  */
+<<<<<<< HEAD
 app.use("/api/articles", articlesRouter);
 app.use("/api/users", usersRouter);
+=======
+app.use('/api/articles', articlesRouter);
+app.use('/api/users', usersRouter);
+>>>>>>> 36e416fdb92a57c38050f402e04f6a2fbbdec340
 //app.use('/api/comment', commentsRouter);
 
 // Bind express server on port 8080
 app.listen(port, () => {
+<<<<<<< HEAD
         console.log(
                 `Express server has started on port ${port}. Open http://localhost:${port} to see results`
         );
+=======
+    console.log(
+        `Express server has started on port ${port}. Open http://localhost:${port} to see results`
+    );
+>>>>>>> 36e416fdb92a57c38050f402e04f6a2fbbdec340
 });
