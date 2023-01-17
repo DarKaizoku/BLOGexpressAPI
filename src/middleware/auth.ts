@@ -1,8 +1,6 @@
-import * as dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { RequestWithUserRole } from '../types/TToken';
-import TUsers from '../types/TUsers';
 
 const secreToken = process.env.secreToken!;
 
