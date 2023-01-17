@@ -1,12 +1,10 @@
-import { JwtPayload } from "jsonwebtoken";
+import { JwtPayload } from 'jsonwebtoken';
 
-export interface RequestWithUserRole extends Request
-{
-    id?: string | JwtPayload | undefined,
-    headers: HeaderWithAuthorization
+export interface RequestWithUserRole extends Request {
+        user_id?: string | JwtPayload | undefined;
+        headers: HeaderWithAuthorization;
 }
 
-interface HeaderWithAuthorization extends Headers
-{
-    authorization?: JwtPayload
+interface HeaderWithAuthorization extends Headers {
+        authorization?: JwtPayload;
 }

@@ -6,13 +6,10 @@ import TUsers from '../types/TUsers';
 
 const secreToken = process.env.secreToken!;
 
-export const verifyToken = (
-        req: Request,
-        res: Response,
-        next: VoidFunction
-) => {
+//fonction de vérification du token, lors de l'authentification des users.
+export function verifyToken(req: Request, res: Response, next: VoidFunction) {
         const authHeader = req.headers.authorization!;
-        const token = authHeader.split(' ')[1]; // permet de supprimer "Bearer" de authorization !!
+        const token: string = authHeader.split(' ')[1]; // permet de supprimer "Bearer" de authorization !!
         if (!token) {
                 res.send('Token Manquant !!');
         } else {
@@ -24,9 +21,11 @@ export const verifyToken = (
                                         message: 'Authentification échouée !!',
                                 });
                         } else {
-                                req.body.user_id = decoded.id;
+                                (
+                                        req as unknown as RequestWithUserRole
+                                ).user_id = decoded.id;
                                 next();
                         }
                 });
         }
-};
+}
