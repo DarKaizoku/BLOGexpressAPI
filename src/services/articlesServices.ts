@@ -1,5 +1,5 @@
 import client from '../constant/client';
-import { QueryResult } from 'pg';
+import { QueryResult, QueryResultRow } from 'pg';
 import { TArticles } from '../types/TArticles';
 
 export class ArticlesServices {
@@ -70,6 +70,22 @@ export class ArticlesServices {
 
         if (select.rowCount > 0) {
             return select.rows[0];
+        }
+
+        return undefined;
+    }
+
+    async deleteArticle(
+        articleId: string,
+        userId: number
+    ): Promise<boolean | undefined> {
+        const del: QueryResultRow = await client.query(
+            'DELETE FROM articles WHERE id = $1 AND user_id = $2',
+            [articleId, userId]
+        );
+
+        if (del.rowCount) {
+            return true;
         }
 
         return undefined;

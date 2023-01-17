@@ -182,4 +182,62 @@ export class ArticlesController {
             });
         }
     }
+
+    async deleteArticle(req: Request, res: Response) {
+        const articleId: string = req.params.id;
+        const userId: number = req.body.user_id;
+
+        if (Number.isNaN(Number(articleId))) {
+            return res.status(404).json({
+                status: 'FAIL',
+                message:
+                    'Type de donnée attendu incorrect, type attendu Number',
+                data: null,
+            });
+        }
+
+        try {
+            const selectArticle = await articlesServices.selectArticle(
+                articleId
+            );
+
+            if (!selectArticle) {
+                res.status(404).json({
+                    status: 'FAIL',
+                    message: 'Aucun ticket ne correspond à cet id',
+                    data: null,
+                });
+                return;
+            }
+
+            if (userId !== selectArticle.user_id) {
+                res.status(403).json({
+                    status: 'fail',
+                    message: "Vous n'avez pas accès à ce ticket",
+                    data: null,
+                });
+                return;
+            }
+
+            const delArticle = await articlesServices.deleteArticle(
+                articleId,
+                userId
+            );
+
+            if (delArticle === true) {
+                res.status(201).json({
+                    status: 'success',
+                    message: 'données supprimées',
+                    data: null,
+                });
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({
+                status: 'FAIL',
+                message: 'erreur serveur',
+                data: null,
+            });
+        }
+    }
 }

@@ -18,4 +18,6 @@ articlesRouter.post('/', articlesController.postArticle);
 
 articlesRouter.put('/:id', articlesController.putArticle);
 
+articlesRouter.delete('/:id', articlesController.deleteArticle);
+
 export default articlesRouter;
