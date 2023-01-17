@@ -21,7 +21,7 @@ export function verifyToken(req: Request, res: Response, next: VoidFunction) {
                         } else {
                                 (
                                         req as unknown as RequestWithUserRole
-                                ).user_id = decoded.id;
+                                ).user_id = decoded.id; //double as pour imposer le typage de req !!!! IMPORTANT !!!
                                 next();
                         }
                 });

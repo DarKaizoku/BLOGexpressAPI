@@ -10,7 +10,7 @@ const articlesController = new ArticlesController();
 
 articlesRouter.get('/', articlesController.getAllArticles);
 
-articlesRouter.get('/:id', articlesController.getOneArticle);
+articlesRouter.get('/:id', verifyToken, articlesController.getOneArticle);
 
 articlesRouter.post('/', articlesController.postArticle);
 

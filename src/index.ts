@@ -6,6 +6,7 @@ import usersRouter from './routes/usersRouter';
 dotenv.config();
 
 import articlesRouter from './routes/articlesRouter';
+import commentsRouter from './routes/commentsRouter';
 
 declare global {
         namespace Express {
@@ -52,7 +53,7 @@ app.use(function (req, res, next) {
  */
 app.use('/api/articles', articlesRouter);
 app.use('/api/users', usersRouter);
-//app.use('/api/comment', commentsRouter);
+app.use('/api/comments', commentsRouter);
 
 // Bind express server on port 8080
 app.listen(port, () => {
