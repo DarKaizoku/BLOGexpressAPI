@@ -1,9 +1,12 @@
-import { Express, Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
 import * as bcrypt from 'bcrypt';
-import client from '../constant/client';
+import * as jwt from 'jsonwebtoken';
+
 import { UsersServices } from '../services/usersServices';
 
 const usersServices = new UsersServices();
+
+const secreToken = process.env.secreToken!;
 
 export class UsersController {
     async register(req: Request, res: Response) {
@@ -28,7 +31,9 @@ export class UsersController {
                     res.status(200).json({
                         status: 'OK',
                         message: `Nous vous avons bien enregistré, ${registerOk} !!`,
-                        data: { name: registerOk },
+                        data: {
+                            name: registerOk,
+                        },
                     });
                 });
             } else {
@@ -63,10 +68,14 @@ export class UsersController {
                 const hash = data.password;
 
                 bcrypt.compare(password, hash, async (err, result) => {
+                    const id = data.id;
+                    const token = jwt.sign({ id }, secreToken);
+
                     if (result) {
                         res.status(200).json({
                             status: 'OK',
                             message: `Vous êtes bien connecté.e !!`,
+                            token: token,
                         });
                     } else {
                         res.status(401).json({

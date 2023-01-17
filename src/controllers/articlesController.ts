@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
-import { QueryResult } from 'pg';
 import { ArticlesServices } from '../services/articlesServices';
-import { TArticles } from '../types/TArticles';
 
 const articlesServices = new ArticlesServices();
 
