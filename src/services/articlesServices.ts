@@ -1,5 +1,5 @@
 import client from '../constant/client';
-import { TArticles } from '../types/TArticles';
+import { TArticles, TResult } from '../types/TArticles';
 
 export class ArticlesServices {
     async allArticles(): Promise<TArticles[] | undefined> {
@@ -12,14 +12,28 @@ export class ArticlesServices {
         return undefined;
     }
 
-    async oneArticle(articleId: string): Promise<TArticles[] | undefined> {
+    async oneArticle(articleId: string): Promise<TResult | undefined> {
         const askedArticle = await client.query(
-            'SELECT * FROM articles WHERE id = $1',
+            'SELECT titre, articles.content, name, comments.content AS content2 FROM articles JOIN comments ON articles.id = comments.article_id JOIN users ON users.id = comments.user_id WHERE articles.id = $1',
             [articleId]
         );
 
         if (askedArticle.rowCount > 0) {
-            return askedArticle.rows[0];
+            const dataArticle = {
+                titre: askedArticle.rows[0].titre,
+                content: askedArticle.rows[0].content,
+            };
+
+            const dataComments = askedArticle.rows.map((item) => {
+                return {
+                    name: item.name,
+                    content: item.content2,
+                };
+            });
+            return {
+                article: dataArticle,
+                comments: dataComments,
+            };
         }
 
         return undefined;
@@ -27,11 +41,12 @@ export class ArticlesServices {
 
     async postArticle(
         titre: string,
-        content: string
+        content: string,
+        userId: string
     ): Promise<TArticles | undefined> {
         const postArticle = await client.query(
-            'INSERT INTO articles (titre, content, user_id) VALUES ($1, $2, 1) RETURNING *',
-            [titre, content]
+            'INSERT INTO articles (titre, content, user_id) VALUES ($1, $2, $3) RETURNING *',
+            [titre, content, userId]
         );
 
         if (postArticle.rowCount > 0) {

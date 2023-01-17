@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { ArticlesServices } from '../services/articlesServices';
+import { RequestWithUserRole } from '../types/TToken';
 
 const articlesServices = new ArticlesServices();
 
@@ -74,6 +75,7 @@ export class ArticlesController {
     async postArticle(req: Request, res: Response) {
         const titre: string = req.body.titre;
         const content: string = req.body.content;
+        const userId: string = req.body.user_id;
 
         if (titre === undefined || content === undefined) {
             res.status(400).json({
@@ -85,7 +87,8 @@ export class ArticlesController {
             try {
                 const postArticle = await articlesServices.postArticle(
                     titre,
-                    content
+                    content,
+                    userId
                 );
 
                 if (postArticle === undefined) {

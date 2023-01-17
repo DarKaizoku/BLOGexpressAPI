@@ -8,11 +8,11 @@ dotenv.config();
 import articlesRouter from './routes/articlesRouter';
 
 declare global {
-    namespace Express {
-        interface Request {
-            user?: JwtPayload; // permet d'inserer un user a req pour l'id
+        namespace Express {
+                interface Request {
+                        user?: JwtPayload; // permet d'inserer un user a req pour l'id
+                }
         }
-    }
 }
 
 // Init environment variables (see .env.local file if it doesn't exist go to README.md file)
@@ -27,24 +27,24 @@ app.use(express.json());
 
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
-    res.setHeader('authorization', '');
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+        res.setHeader('authorization', '');
+        // Website you wish to allow to connect
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 
-    // Request methods you wish to allow
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-    );
+        // Request methods you wish to allow
+        res.setHeader(
+                'Access-Control-Allow-Methods',
+                'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+        );
 
-    // Request headers you wish to allow
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
+        // Request headers you wish to allow
+        res.setHeader(
+                'Access-Control-Allow-Headers',
+                'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        );
 
-    // Pass to next layer of middleware
-    next();
+        // Pass to next layer of middleware
+        next();
 });
 
 /************************************************
@@ -56,7 +56,7 @@ app.use('/api/users', usersRouter);
 
 // Bind express server on port 8080
 app.listen(port, () => {
-    console.log(
-        `Express server has started on port ${port}. Open http://localhost:${port} to see results`
-    );
+        console.log(
+                `Express server has started on port ${port}. Open http://localhost:${port} to see results`
+        );
 });

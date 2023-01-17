@@ -8,14 +8,14 @@ const articlesController = new ArticlesController();
 // changer la valeur de l'id au niveau de articlesServices ligne 33 !!!!!
 // changer la valeur de userId au niveau de putArticle ligne 121 !!!!
 
-articlesRouter.get('/', verifyToken, articlesController.getAllArticles);
+articlesRouter.get('/', articlesController.getAllArticles);
 
 articlesRouter.get('/:id', articlesController.getOneArticle);
 
-articlesRouter.post('/', articlesController.postArticle);
+articlesRouter.post('/', verifyToken, articlesController.postArticle);
 
-articlesRouter.put('/:id', articlesController.putArticle);
+articlesRouter.put('/:id', verifyToken, articlesController.putArticle);
 
-articlesRouter.delete('/:id', articlesController.deleteArticle);
+articlesRouter.delete('/:id', verifyToken, articlesController.deleteArticle);
 
 export default articlesRouter;
