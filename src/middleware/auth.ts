@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
+import { RequestWithUserRole } from '../types/TToken';
 
 const secreToken = process.env.secreToken!;
 
@@ -21,7 +22,7 @@ export const verifyToken = (
                     message: 'Authentification échouée !!',
                 });
             } else {
-                req.body.user_id = decoded.id;
+                req.user_id = decoded.id;
                 next();
             }
         });
