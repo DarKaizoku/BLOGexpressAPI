@@ -12,7 +12,20 @@ export class ArticlesServices {
         return undefined;
     }
 
-    async oneArticle(articleId: string): Promise<TResult | undefined> {
+    async oneArticle(articleId: string): Promise<TArticles | undefined> {
+        const askedArticle = await client.query(
+            'SELECT * FROM articles WHERE id = $1',
+            [articleId]
+        );
+
+        if (askedArticle.rowCount > 0) {
+            return askedArticle.rows[0];
+        }
+
+        return undefined;
+    }
+
+    async articleComment(articleId: string): Promise<TResult | undefined> {
         const askedArticle = await client.query(
             'SELECT titre, articles.content, name, comments.content AS content2 FROM articles JOIN comments ON articles.id = comments.article_id JOIN users ON users.id = comments.user_id WHERE articles.id = $1',
             [articleId]
