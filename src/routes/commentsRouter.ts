@@ -7,7 +7,11 @@ const commentsRouter = Router();
 
 commentsRouter.get('/:id', commentsController.getArticleWithComments);
 
-commentsRouter.post('/', verifyToken, commentsController.postComment);
+commentsRouter.post(
+        '/article/:id',
+        verifyToken,
+        commentsController.postComment
+);
 
 commentsRouter.put('/:id', verifyToken, commentsController.putComment);
 

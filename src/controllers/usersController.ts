@@ -76,6 +76,7 @@ export class UsersController {
                         }
                         if (data) {
                                 const hash = data.password;
+                                const admin_status = data.admin_status;
 
                                 bcrypt.compare(
                                         password,
@@ -83,7 +84,10 @@ export class UsersController {
                                         async (err, result) => {
                                                 const id = data.id;
                                                 const token = jwt.sign(
-                                                        { id },
+                                                        {
+                                                                id: id,
+                                                                admin: admin_status,
+                                                        },
                                                         secreToken
                                                 );
 

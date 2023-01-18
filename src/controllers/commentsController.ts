@@ -40,7 +40,7 @@ export class CommentsController {
         async postComment(req: Request, res: Response) {
                 const user_id: string = req.body.user_id;
                 const content: string = req.body.content;
-                const article_id: string = req.body.article_id;
+                const article_id: string = req.params.id;
 
                 if (article_id === undefined || content === undefined) {
                         res.status(400).json({
@@ -85,6 +85,7 @@ export class CommentsController {
                 const user_id: string = req.body.user_id;
                 const content: string = req.body.content;
                 const comment_id: string = req.params.id;
+                const admin: boolean = req.body.admin;
 
                 if (Number.isNaN(Number(comment_id))) {
                         return res.status(404).json({
@@ -115,7 +116,7 @@ export class CommentsController {
                                 return;
                         }
 
-                        if (user_id !== dataComment.user_id) {
+                        if (user_id !== dataComment.user_id || admin) {
                                 res.status(403).json({
                                         status: 'fail',
                                         message: "Vous n'avez pas accès à ce commentaire",
@@ -151,6 +152,7 @@ export class CommentsController {
         async deleteComment(req: Request, res: Response) {
                 const user_id: string = req.body.user_id;
                 const comment_id: string = req.params.id;
+                const admin: boolean = req.body.admin;
 
                 if (Number.isNaN(Number(comment_id))) {
                         return res.status(404).json({
@@ -174,7 +176,7 @@ export class CommentsController {
                                 return;
                         }
 
-                        if (user_id !== dataComment.user_id) {
+                        if (user_id !== dataComment.user_id || !admin) {
                                 res.status(403).json({
                                         status: 'fail',
                                         message: "Vous n'avez pas accès à ce commentaire",

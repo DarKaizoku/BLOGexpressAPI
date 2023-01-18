@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
+import { decode } from 'punycode';
 
 const secreToken = process.env.secreToken!;
 
@@ -19,6 +20,7 @@ export function verifyToken(req: Request, res: Response, next: VoidFunction) {
                                 });
                         } else {
                                 req.body.user_id = decoded.id;
+                                req.body.admin = decoded.admin;
                                 next();
                         }
                 });

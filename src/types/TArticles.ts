@@ -1,15 +1,7 @@
 export type TArticles = {
-    id: number;
-    titre: string;
-    content: string;
-    user_id: number;
-    date: Date;
-};
-
-export type TResult = {
-    article: {
+        id: number;
         titre: string;
         content: string;
-    };
-    comments: { name: string; content: string }[];
+        user_id: number;
+        date: Date;
 };
