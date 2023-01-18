@@ -1,5 +1,5 @@
 import client from '../constant/client';
-import { TArticles, TResult } from '../types/TArticles';
+import { TArticles } from '../types/TArticles';
 import { TArticleWithComments } from '../types/TArticleWithComments';
 
 export class ArticlesServices {

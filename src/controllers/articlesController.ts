@@ -1,4 +1,3 @@
-import { timeStamp } from 'console';
 import { Request, Response } from 'express';
 import { ArticlesServices } from '../services/articlesServices';
 
@@ -13,7 +12,6 @@ const articlesServices = new ArticlesServices();
  * * **.putArticle()** : Contrôle préalable à la modification d'un article
  * * **.deleteArticle()** : Contrôle préalable à la suppression d'un article
  */
-
 export class ArticlesController {
     /**
      * Vérification de l'existence d'article et leurs affichages
