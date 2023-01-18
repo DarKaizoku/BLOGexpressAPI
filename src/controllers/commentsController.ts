@@ -38,9 +38,9 @@ export class CommentsController {
         }
 
         async postComment(req: Request, res: Response) {
-                const user_id = req.body.user_id;
-                const content = req.body.content;
-                const article_id = req.body.article_id;
+                const user_id: string = req.body.user_id;
+                const content: string = req.body.content;
+                const article_id: string = req.body.article_id;
 
                 if (article_id === undefined || content === undefined) {
                         res.status(400).json({
@@ -82,9 +82,9 @@ export class CommentsController {
         }
 
         async putComment(req: Request, res: Response) {
-                const user_id = req.body.user_id;
-                const content = req.body.content;
-                const comment_id = req.params.id;
+                const user_id: string = req.body.user_id;
+                const content: string = req.body.content;
+                const comment_id: string = req.params.id;
 
                 if (Number.isNaN(Number(comment_id))) {
                         return res.status(404).json({
@@ -134,8 +134,67 @@ export class CommentsController {
                         if (dataUpdated !== undefined) {
                                 res.status(201).json({
                                         status: 'success',
-                                        message: 'données modifiées',
+                                        message: 'commentaire modifié',
                                         data: dataUpdated,
+                                });
+                        }
+                } catch (err) {
+                        console.log(err);
+                        res.status(500).json({
+                                status: 'FAIL',
+                                message: 'erreur serveur',
+                                data: null,
+                        });
+                }
+        }
+
+        async deleteComment(req: Request, res: Response) {
+                const user_id: string = req.body.user_id;
+                const comment_id: string = req.params.id;
+
+                if (Number.isNaN(Number(comment_id))) {
+                        return res.status(404).json({
+                                status: 'FAIL',
+                                message: 'Type de donnée attendu incorrect, type attendu Number',
+                                data: null,
+                        });
+                }
+
+                try {
+                        const dataComment = await commentsServices.getComment(
+                                comment_id
+                        );
+
+                        if (!dataComment) {
+                                res.status(404).json({
+                                        status: 'FAIL',
+                                        message: 'Aucun commentaire ne correspond à cet id',
+                                        data: null,
+                                });
+                                return;
+                        }
+
+                        if (user_id !== dataComment.user_id) {
+                                res.status(403).json({
+                                        status: 'fail',
+                                        message: "Vous n'avez pas accès à ce commentaire",
+                                        data: null,
+                                });
+                                return;
+                        }
+
+                        const dataArchived =
+                                await commentsServices.deleteComment(
+                                        user_id,
+                                        comment_id
+                                );
+                        console.log(dataArchived);
+
+                        if (dataArchived === true) {
+                                res.status(201).json({
+                                        status: 'success',
+                                        message: 'commentaire supprimé !!',
+                                        data: null,
                                 });
                         }
                 } catch (err) {

@@ -11,4 +11,5 @@ commentsRouter.post('/', verifyToken, commentsController.postComment);
 
 commentsRouter.put('/:id', verifyToken, commentsController.putComment);
 
+commentsRouter.delete('/:id', verifyToken, commentsController.deleteComment);
 export default commentsRouter;
