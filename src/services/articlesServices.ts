@@ -94,7 +94,7 @@ export class ArticlesServices {
         userId: number
     ): Promise<TArticles | undefined> {
         const changes = await client.query(
-            'UPDATE articles SET titre = $1, content = $2 WHERE id = $3 AND user_id = $4 RETURNING *',
+            'UPDATE articles SET titre = $1, content = $2,,date=current_timestamp WHERE id = $3 AND user_id = $4 RETURNING *',
             [titre, content, articleId, userId]
         );
 
