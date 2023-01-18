@@ -4,7 +4,9 @@ import { TArticleWithComments } from '../types/TArticleWithComments';
 
 export class ArticlesServices {
     async allArticles(): Promise<TArticles[] | undefined> {
-        const articles = await client.query('SELECT * FROM articles');
+        const articles = await client.query(
+            'SELECT * FROM articles WHERE deleted_at is null'
+        );
 
         if (articles.rowCount > 0) {
             return articles.rows;
@@ -15,7 +17,7 @@ export class ArticlesServices {
 
     async oneArticle(articleId: string): Promise<TArticles | undefined> {
         const askedArticle = await client.query(
-            'SELECT * FROM articles WHERE id = $1',
+            'SELECT * FROM articles WHERE id = $1 AND deleted_at is null',
             [articleId]
         );
 
@@ -121,7 +123,7 @@ export class ArticlesServices {
         userId: number
     ): Promise<boolean | undefined> {
         const del = await client.query(
-            'DELETE FROM articles WHERE id = $1 AND user_id = $2',
+            'UPDATE articles SET deleted_at = CURRENT_TIMESTAMP WHERE id = $1 AND user_id = $2',
             [articleId, userId]
         );
 

@@ -1,10 +1,24 @@
+import { timeStamp } from 'console';
 import { Request, Response } from 'express';
 import { ArticlesServices } from '../services/articlesServices';
-import { RequestWithUserRole } from '../types/TToken';
 
 const articlesServices = new ArticlesServices();
 
+/**
+ * Class permettant le contrôle des données entrantes pour les requête articles
+ * * **.getAllArticles()** : Contrôle préalable à la récupération de tous les articles
+ * * **.getOneArticle()** : Contrôle préalable à la récupération d'un article via son id
+ * * **.getArticleComment()** : Contrôle préalable à la récupération d'un article via son id ainsi que les commentaires liés
+ * * **.postArticle()** : Contrôle préalable à l'ajout d'un nouvel article
+ * * **.putArticle()** : Contrôle préalable à la modification d'un article
+ * * **.deleteArticle()** : Contrôle préalable à la suppression d'un article
+ */
+
 export class ArticlesController {
+    /**
+     * Vérification de l'existence d'article et leurs affichages
+     * * Response.data retourne les articles complets
+     */
     async getAllArticles(req: Request, res: Response) {
         try {
             const articles = await articlesServices.allArticles();
@@ -32,6 +46,11 @@ export class ArticlesController {
         }
     }
 
+    /**
+     * Vérification de l'existence d'un article et son affichage
+     * * Request : id de l'article
+     * * Response : retourne l'article demandé
+     */
     async getOneArticle(req: Request, res: Response) {
         const articleId = req.params.id;
 
@@ -70,6 +89,11 @@ export class ArticlesController {
         }
     }
 
+    /**
+     * Vérification de l'existence d'un article, son affichage et l'affichage des commentaires liés
+     * * Request : id de l'article
+     * * Response : retourne l'article demandé et les commentaires liés
+     */
     async getArticleComment(req: Request, res: Response) {
         const articleId = req.params.id;
 
@@ -110,6 +134,11 @@ export class ArticlesController {
         }
     }
 
+    /**
+     * Vérification des données en entré de la requête avant la création.
+     * * Request : titre de l'article (body), content de l'article (body), l'id de l'utilisateur qui post (token)
+     * * Response : retourne l'article crée
+     */
     async postArticle(req: Request, res: Response) {
         const titre: string = req.body.titre;
         const content: string = req.body.content;
@@ -153,6 +182,11 @@ export class ArticlesController {
         }
     }
 
+    /**
+     * Vérification de l'existence de l'article, vérification des données en entré de la requête avant la modification.
+     * * Request : id de l'article, titre de l'article (body), content de l'article (body), l'id de l'utilisateur qui modifi (token)
+     * * Response : retourne l'article modifié
+     */
     async putArticle(req: Request, res: Response) {
         const articleId: string = req.params.id;
         const titre: string = req.body.titre;
@@ -183,7 +217,7 @@ export class ArticlesController {
             if (!selectArticle) {
                 res.status(404).json({
                     status: 'FAIL',
-                    message: 'Aucun ticket ne correspond à cet id',
+                    message: 'Aucun article ne correspond à cet id',
                     data: null,
                 });
                 return;
@@ -192,7 +226,7 @@ export class ArticlesController {
             if (userId !== selectArticle.user_id) {
                 res.status(403).json({
                     status: 'fail',
-                    message: "Vous n'avez pas accès à ce ticket",
+                    message: "Vous n'avez pas accès à cet article",
                     data: null,
                 });
                 return;
@@ -222,12 +256,17 @@ export class ArticlesController {
         }
     }
 
+    /**
+     * Vérification de l'existence de l'article, suppression de l'article et des commentaires liés
+     * * Request : id de l'article, l'id de l'utilisateur qui supprime (token)
+     * * Response : retourne le message de confirmation de suppression
+     */
     async deleteArticle(req: Request, res: Response) {
         const articleId: string = req.params.id;
         const userId: number = req.body.user_id;
 
         if (Number.isNaN(Number(articleId))) {
-            return res.status(404).json({
+            return res.status(400).json({
                 status: 'FAIL',
                 message:
                     'Type de donnée attendu incorrect, type attendu Number',
@@ -243,7 +282,7 @@ export class ArticlesController {
             if (!selectArticle) {
                 res.status(404).json({
                     status: 'FAIL',
-                    message: 'Aucun ticket ne correspond à cet id',
+                    message: 'Aucun article ne correspond à cet id',
                     data: null,
                 });
                 return;
@@ -252,7 +291,7 @@ export class ArticlesController {
             if (userId !== selectArticle.user_id) {
                 res.status(403).json({
                     status: 'fail',
-                    message: "Vous n'avez pas accès à ce ticket",
+                    message: "Vous n'avez pas accès à cet article",
                     data: null,
                 });
                 return;
