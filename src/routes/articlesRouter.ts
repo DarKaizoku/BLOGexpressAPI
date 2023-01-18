@@ -12,10 +12,10 @@ articlesRouter.get('/', articlesController.getAllArticles);
 
 articlesRouter.get('/:id', verifyToken, articlesController.getOneArticle);
 
-articlesRouter.post('/', articlesController.postArticle);
+articlesRouter.post('/', verifyToken, articlesController.postArticle);
 
-articlesRouter.put('/:id', articlesController.putArticle);
+articlesRouter.put('/:id', verifyToken, articlesController.putArticle);
 
-articlesRouter.delete('/:id', articlesController.deleteArticle);
+articlesRouter.delete('/:id', verifyToken, articlesController.deleteArticle);
 
 export default articlesRouter;

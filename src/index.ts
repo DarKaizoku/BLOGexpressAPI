@@ -3,7 +3,6 @@ import * as express from 'express';
 import * as dotenv from 'dotenv';
 import { JwtPayload } from 'jsonwebtoken';
 import usersRouter from './routes/usersRouter';
-dotenv.config();
 
 import articlesRouter from './routes/articlesRouter';
 import commentsRouter from './routes/commentsRouter';

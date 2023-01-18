@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { ArticlesServices } from '../services/articlesServices';
+import { RequestWithUserRole } from '../types/TToken';
 
 const articlesServices = new ArticlesServices();
 
@@ -87,7 +88,8 @@ export class ArticlesController {
                                 const postArticle =
                                         await articlesServices.postArticle(
                                                 titre,
-                                                content
+                                                content,
+                                                userId
                                         );
 
                                 if (postArticle === undefined) {
