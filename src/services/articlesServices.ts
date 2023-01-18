@@ -1,5 +1,6 @@
 import client from '../constant/client';
 import { TArticles, TResult } from '../types/TArticles';
+import { TArticleWithComments } from '../types/TArticleWithComments';
 
 export class ArticlesServices {
     async allArticles(): Promise<TArticles[] | undefined> {
@@ -25,14 +26,16 @@ export class ArticlesServices {
         return undefined;
     }
 
-    async articleComment(articleId: string): Promise<TResult | undefined> {
+    async articleComment(
+        articleId: string
+    ): Promise<TArticleWithComments | undefined> {
         const askedArticle = await client.query(
             'SELECT titre, articles.content, name, comments.content AS content2 FROM articles JOIN comments ON articles.id = comments.article_id JOIN users ON users.id = comments.user_id WHERE articles.id = $1',
             [articleId]
         );
 
         if (askedArticle.rowCount > 0) {
-            const dataArticle = {
+            /* const dataArticle = {
                 titre: askedArticle.rows[0].titre,
                 content: askedArticle.rows[0].content,
             };
@@ -46,6 +49,19 @@ export class ArticlesServices {
             return {
                 article: dataArticle,
                 comments: dataComments,
+            }; */
+            const titreArticle: string = askedArticle.rows[0].titre;
+            const contentArticle: string = askedArticle.rows[0].content;
+            const dataComments2 = askedArticle.rows.map((data) => {
+                return {
+                    name: data.name,
+                    content_comment: data.content2,
+                };
+            });
+            return {
+                title: titreArticle,
+                content_article: contentArticle,
+                comments: dataComments2,
             };
         }
 
