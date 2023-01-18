@@ -19,4 +19,18 @@ export class CommentsServices {
         /* async getArticlebyUser_id(user_id):Promise<TComments | undefined>{
             const data = await client.query('select *')
         } */
+        async addComment(
+                user_id: string,
+                content: string,
+                article_id: string
+        ): Promise<TComments | undefined> {
+                const data = await client.query(
+                        'insert into comments (user_id,content,article_id) values ($1,$2,$3) returning *',
+                        [user_id, content, article_id]
+                );
+                if (data.rowCount) {
+                        return data.rows[0];
+                }
+                return undefined;
+        }
 }
