@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 
 import { UsersServices } from '../services/usersServices';
+import TUsers from '../types/TUsers';
 
 const usersServices = new UsersServices();
 
@@ -52,7 +53,7 @@ export class UsersController {
                         }
                 } catch (error) {
                         console.log(error);
-                        res.status(404).json({
+                        res.status(500).json({
                                 status: 'ERROR',
                                 message: '!!! ERREUR !!!',
                         });
@@ -114,7 +115,53 @@ export class UsersController {
                 } catch (error) {
                         console.log(error);
                         res.status(500).json({
-                                status: 'ERROR',
+                                status: 'FAIL',
+                                message: `!!! ERREUR !!!`,
+                        });
+                }
+        }
+
+        async setAdmin(req: Request, res: Response) {
+                const name = req.body.name;
+                const admin = req.body.admin;
+
+                if (!admin) {
+                        return res.status(403).json({
+                                status: 'FAIL',
+                                message: `Vous n'avez pas les droits !!`,
+                        });
+                }
+
+                if (name === undefined) {
+                        return res.status(400).json({
+                                status: 'FAIL',
+                                message: `La donnée de nom est manquante !!`,
+                        });
+                }
+
+                try {
+                        const listNames = await usersServices.getNames();
+
+                        if (!listNames?.includes(name)) {
+                                return res.status(404).json({
+                                        status: 'FAIL',
+                                        message: `Le nom ${name} n'existe pas !!`,
+                                });
+                        }
+                        const statusUp = await usersServices.updateStatusUser(
+                                name
+                        );
+
+                        if (statusUp) {
+                                return res.status(200).json({
+                                        status: 'SUCCESS',
+                                        message: `${name} est devenu.e Admin ou est déjà Admin !!`,
+                                });
+                        }
+                } catch (error) {
+                        console.log(error);
+                        res.status(500).json({
+                                status: 'FAIL',
                                 message: `!!! ERREUR !!!`,
                         });
                 }

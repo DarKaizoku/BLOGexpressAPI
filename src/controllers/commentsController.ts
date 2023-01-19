@@ -9,16 +9,16 @@ export class CommentsController {
                 const articleId: string = req.params.id;
 
                 try {
-                        const dataArticle =
+                        const dataComment =
                                 await commentsServices.getAllCommentsbyArticle(
                                         articleId
                                 );
 
-                        if (dataArticle) {
+                        if (dataComment) {
                                 res.status(200).json({
                                         status: 'SUCCESS',
                                         message: `voici tous les commentaire de l'article ${articleId}`,
-                                        data: dataArticle,
+                                        data: dataComment,
                                 });
                         } else {
                                 res.status(404).json({
