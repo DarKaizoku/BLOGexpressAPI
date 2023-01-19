@@ -91,12 +91,11 @@ export class ArticlesServices {
         async putArticle(
                 articleId: string,
                 titre: string,
-                content: string,
-                userId: number
+                content: string
         ): Promise<TArticles | undefined> {
                 const changes = await client.query(
-                        'UPDATE articles SET titre = $1, content = $2,,date=current_timestamp WHERE id = $3 AND user_id = $4 RETURNING *',
-                        [titre, content, articleId, userId]
+                        'UPDATE articles SET titre = $1, content = $2, date=current_timestamp WHERE id = $3 RETURNING *',
+                        [titre, content, articleId]
                 );
 
                 if (changes.rowCount > 0) {
@@ -106,9 +105,11 @@ export class ArticlesServices {
                 return undefined;
         }
 
-        async selectArticle(articleId: string): Promise<TArticles | undefined> {
+        async selectUserArticle(
+                articleId: string
+        ): Promise<TArticles | undefined> {
                 const select = await client.query(
-                        'SELECT user_id FROM articles WHERE id = $1',
+                        'SELECT user_id FROM articles WHERE id = $1 and deleted_at is null',
                         [articleId]
                 );
 
@@ -119,13 +120,10 @@ export class ArticlesServices {
                 return undefined;
         }
 
-        async deleteArticle(
-                articleId: string,
-                userId: number
-        ): Promise<boolean | undefined> {
+        async deleteArticle(articleId: string): Promise<boolean | undefined> {
                 const del = await client.query(
-                        'UPDATE articles SET deleted_at = CURRENT_TIMESTAMP WHERE id = $1 AND user_id = $2',
-                        [articleId, userId]
+                        'UPDATE articles SET deleted_at = CURRENT_TIMESTAMP WHERE id = $1 returning *',
+                        [articleId]
                 );
 
                 if (del.rowCount) {

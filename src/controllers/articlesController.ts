@@ -5,7 +5,7 @@ import { ArticlesServices } from '../services/articlesServices';
 const articlesServices = new ArticlesServices();
 
 /**
- * Class permettant le contrôle des données entrantes pour les requête articles
+ * Class permettant le contrôle des données entrantes pour les requêtes articles
  * * **.getAllArticles()** : Contrôle préalable à la récupération de tous les articles
  * * **.getOneArticle()** : Contrôle préalable à la récupération d'un article via son id
  * * **.getArticleComment()** : Contrôle préalable à la récupération d'un article via son id ainsi que les commentaires liés
@@ -213,7 +213,9 @@ export class ArticlesController {
 
                 try {
                         const selectArticle =
-                                await articlesServices.selectArticle(articleId);
+                                await articlesServices.selectUserArticle(
+                                        articleId
+                                );
 
                         if (!selectArticle) {
                                 res.status(404).json({
@@ -224,27 +226,26 @@ export class ArticlesController {
                                 return;
                         }
 
-                        if (userId !== selectArticle.user_id || !admin) {
+                        if (userId === selectArticle.user_id || admin) {
+                                const changeArticle =
+                                        await articlesServices.putArticle(
+                                                articleId,
+                                                titre,
+                                                content
+                                        );
+
+                                if (changeArticle !== undefined) {
+                                        res.status(201).json({
+                                                status: 'success',
+                                                message: 'données modifiées',
+                                                data: changeArticle,
+                                        });
+                                }
+                        } else {
                                 res.status(403).json({
                                         status: 'fail',
                                         message: "Vous n'avez pas accès à cet article",
                                         data: null,
-                                });
-                                return;
-                        }
-
-                        const changeArticle = await articlesServices.putArticle(
-                                articleId,
-                                titre,
-                                content,
-                                userId
-                        );
-
-                        if (changeArticle !== undefined) {
-                                res.status(201).json({
-                                        status: 'success',
-                                        message: 'données modifiées',
-                                        data: changeArticle,
                                 });
                         }
                 } catch (err) {
@@ -277,7 +278,9 @@ export class ArticlesController {
 
                 try {
                         const selectArticle =
-                                await articlesServices.selectArticle(articleId);
+                                await articlesServices.selectUserArticle(
+                                        articleId
+                                );
 
                         if (!selectArticle) {
                                 res.status(404).json({
@@ -288,24 +291,23 @@ export class ArticlesController {
                                 return;
                         }
 
-                        if (userId !== selectArticle.user_id || !admin) {
+                        if (userId === selectArticle.user_id || admin) {
+                                const delArticle =
+                                        await articlesServices.deleteArticle(
+                                                articleId
+                                        );
+
+                                if (delArticle === true) {
+                                        res.status(201).json({
+                                                status: 'success',
+                                                message: 'données supprimées',
+                                                data: null,
+                                        });
+                                }
+                        } else {
                                 res.status(403).json({
                                         status: 'fail',
                                         message: "Vous n'avez pas accès à cet article",
-                                        data: null,
-                                });
-                                return;
-                        }
-
-                        const delArticle = await articlesServices.deleteArticle(
-                                articleId,
-                                userId
-                        );
-
-                        if (delArticle === true) {
-                                res.status(201).json({
-                                        status: 'success',
-                                        message: 'données supprimées',
                                         data: null,
                                 });
                         }

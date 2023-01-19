@@ -116,27 +116,25 @@ export class CommentsController {
                                 return;
                         }
 
-                        if (user_id !== dataComment.user_id || admin) {
+                        if (user_id === dataComment.user_id || admin) {
+                                const dataUpdated =
+                                        await commentsServices.updateComment(
+                                                content,
+                                                comment_id
+                                        );
+
+                                if (dataUpdated !== undefined) {
+                                        res.status(201).json({
+                                                status: 'success',
+                                                message: 'commentaire modifié',
+                                                data: dataUpdated,
+                                        });
+                                }
+                        } else {
                                 res.status(403).json({
                                         status: 'fail',
                                         message: "Vous n'avez pas accès à ce commentaire",
                                         data: null,
-                                });
-                                return;
-                        }
-
-                        const dataUpdated =
-                                await commentsServices.updateComment(
-                                        user_id,
-                                        content,
-                                        comment_id
-                                );
-
-                        if (dataUpdated !== undefined) {
-                                res.status(201).json({
-                                        status: 'success',
-                                        message: 'commentaire modifié',
-                                        data: dataUpdated,
                                 });
                         }
                 } catch (err) {
@@ -166,6 +164,7 @@ export class CommentsController {
                         const dataComment = await commentsServices.getComment(
                                 comment_id
                         );
+                        console.log(dataComment);
 
                         if (!dataComment) {
                                 res.status(404).json({
@@ -176,28 +175,26 @@ export class CommentsController {
                                 return;
                         }
 
-                        if (user_id !== dataComment.user_id || !admin) {
+                        if (user_id === dataComment.user_id || admin) {
+                                const dataArchived =
+                                        await commentsServices.deleteComment(
+                                                comment_id
+                                        );
+
+                                if (dataArchived === true) {
+                                        res.status(201).json({
+                                                status: 'success',
+                                                message: 'commentaire supprimé !!',
+                                                data: null,
+                                        });
+                                }
+                        } else {
                                 res.status(403).json({
                                         status: 'fail',
                                         message: "Vous n'avez pas accès à ce commentaire",
                                         data: null,
                                 });
                                 return;
-                        }
-
-                        const dataArchived =
-                                await commentsServices.deleteComment(
-                                        user_id,
-                                        comment_id
-                                );
-                        console.log(dataArchived);
-
-                        if (dataArchived === true) {
-                                res.status(201).json({
-                                        status: 'success',
-                                        message: 'commentaire supprimé !!',
-                                        data: null,
-                                });
                         }
                 } catch (err) {
                         console.log(err);

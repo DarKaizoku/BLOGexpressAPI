@@ -17,7 +17,7 @@ export class CommentsServices {
         }
         async getComment(id: string) {
                 const data = await client.query(
-                        'select * from comments where id = $1',
+                        'select * from comments where id = $1 and deleted_at is null',
                         [id]
                 );
 
@@ -41,13 +41,12 @@ export class CommentsServices {
                 return undefined;
         }
         async updateComment(
-                user_id: string,
                 content: string,
                 comment_id: string
         ): Promise<TComments | undefined> {
                 const data = await client.query(
-                        'UPDATE comments SET content = $2,date=current_timestamp WHERE id = $3 AND user_id = $1 RETURNING *',
-                        [user_id, content, comment_id]
+                        'UPDATE comments SET content = $1,date=current_timestamp WHERE id = $2 RETURNING *',
+                        [content, comment_id]
                 );
 
                 if (data.rowCount > 0) {
@@ -56,10 +55,10 @@ export class CommentsServices {
 
                 return undefined;
         }
-        async deleteComment(user_id: string, comment_id: string) {
+        async deleteComment(comment_id: string) {
                 const data = await client.query(
-                        'update comments set deleted_at=current_timestamp where id = $1 and user_id = $2',
-                        [comment_id, user_id]
+                        'update comments set deleted_at=current_timestamp where id = $1',
+                        [comment_id]
                 );
 
                 if (data.rowCount) {

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
-import { decode } from 'punycode';
 
 const secreToken = process.env.secreToken!;
 
