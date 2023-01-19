@@ -2,11 +2,20 @@ import { QueryResult } from 'pg';
 import client from '../constant/client';
 import TUsers from '../types/TUsers';
 
+/**
+ * Class permettant les envoies de requête vers la db concernant les users
+ * * **.getNames()** : Requête l'accès aux name des users
+ * * **.addUser()** : Requête l'ajout d'un user
+ * * **.getDataUserbyName()** : Requête les datas d'un user par son name
+ */
 export class UsersServices {
-    //method getNames est une requete SQL pour obtenir tous les noms du tableau users.
+    /**
+     * Requête l'accès aux name des user
+     * Response : retourne le name des users sous forme de tableau
+     */
     async getNames(): Promise<string[] | undefined> {
         const data: QueryResult<TUsers> = await client.query(
-            'select name from users'
+            'SELECT name FROM users'
         );
 
         if (data.rowCount) {
@@ -15,10 +24,14 @@ export class UsersServices {
         }
         return undefined;
     }
-    //method addUser est une requete SQL pour créer une nouvelle ligne dans le tableau users.
+
+    /**
+     * Requête l'ajout d'un nouvel user
+     * Response : retourne le name et le password du user avant hashage
+     */
     async addUser(name: string, password: string): Promise<string | undefined> {
         const data: QueryResult<TUsers> = await client.query(
-            'insert into users (name,password) values ($1,$2) returning *',
+            'INSERT INTO users (name,password) VALUES ($1,$2) RETURNING *',
             [name, password]
         );
 
@@ -27,10 +40,14 @@ export class UsersServices {
         }
         return undefined;
     }
-    //method getDataUserbyName est une requete SQL pour récupérer les données d'un utilisateur via son nom .
+
+    /**
+     * Requête l'accès aux user via le name
+     * Response : retourne la data du user demandé
+     */
     async getDataUserbyName(name: string): Promise<TUsers | undefined> {
         const data: QueryResult<TUsers> = await client.query(
-            'select * from users where name = $1',
+            'SELECT * FROM users WHERE name = $1',
             [name]
         );
 

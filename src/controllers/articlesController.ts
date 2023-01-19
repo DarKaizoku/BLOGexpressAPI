@@ -208,7 +208,7 @@ export class ArticlesController {
         }
 
         try {
-            const selectArticle = await articlesServices.selectArticle(
+            const selectArticle = await articlesServices.selectUserArticle(
                 articleId
             );
 
@@ -273,7 +273,7 @@ export class ArticlesController {
         }
 
         try {
-            const selectArticle = await articlesServices.selectArticle(
+            const selectArticle = await articlesServices.selectUserArticle(
                 articleId
             );
 
@@ -300,11 +300,11 @@ export class ArticlesController {
                 userId
             );
 
-            if (delArticle === true) {
+            if (delArticle !== undefined) {
                 res.status(201).json({
                     status: 'success',
-                    message: 'données supprimées',
-                    data: null,
+                    message: 'article archivé',
+                    data: delArticle,
                 });
             }
         } catch (err) {

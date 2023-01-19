@@ -9,9 +9,12 @@ const commentsRouter = Router();
 commentsRouter.get('/:id', commentsController.getArticleWithComments);
 
 // Route permettant de poster un commentaires sur un article pour un user log
-commentsRouter.post('/', verifyToken, commentsController.postComment);
+commentsRouter.post('/wich/:id', verifyToken, commentsController.postComment);
 
 // Route permettant de modifier un commentaires sur un article si il appartient au user log
 commentsRouter.put('/:id', verifyToken, commentsController.putComment);
+
+// Route permettant de supprimer un commentaires si il appartient au user log
+commentsRouter.delete('/:id', verifyToken, commentsController.deleteComment);
 
 export default commentsRouter;
