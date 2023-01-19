@@ -18,20 +18,29 @@ export class CommentsController {
         const articleId: string = req.params.id;
 
         try {
-            const dataArticle = await commentsServices.getAllCommentsbyArticle(
+            const dataArticle = await commentsServices.getArticle(articleId);
+            const dataComment = await commentsServices.getAllCommentsbyArticle(
                 articleId
             );
 
-            if (dataArticle) {
+            if (!dataArticle) {
+                return res.status(404).json({
+                    status: 'FAIL',
+                    message: 'Aucun article trouvé',
+                    data: null,
+                });
+            }
+
+            if (dataComment) {
                 res.status(200).json({
                     status: 'SUCCESS',
-                    message: `voici tous les commentaire de l'article ${articleId}`,
-                    data: dataArticle,
+                    message: `Voici tous les commentaire de l'article ${articleId}`,
+                    data: dataComment,
                 });
             } else {
                 res.status(404).json({
                     status: 'FAIL',
-                    message: `Pas d'article numéro : ${articleId}`,
+                    message: `Pas de commentaire pour l'article : ${articleId}`,
                     data: null,
                 });
             }

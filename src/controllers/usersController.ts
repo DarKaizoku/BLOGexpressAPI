@@ -53,7 +53,7 @@ export class UsersController {
             }
         } catch (error) {
             console.log(error);
-            res.status(404).json({
+            res.status(500).json({
                 status: 'ERROR',
                 message: '!!! ERREUR !!!',
             });

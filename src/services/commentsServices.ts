@@ -1,4 +1,5 @@
 import client from '../constant/client';
+import { TArticles } from '../types/TArticles';
 import { TComments } from '../types/TComments';
 
 /**
@@ -12,8 +13,23 @@ import { TComments } from '../types/TComments';
 
 export class CommentsServices {
     /**
+     * Requête l'accès aux articles
+     * * Response : retourne la data de tout les articles
+     */
+    async getArticle(article_id: string): Promise<TArticles | undefined> {
+        const data = await client.query(
+            'SELECT * FROM articles WHERE id = $1 AND deleted_at IS NULL',
+            [article_id]
+        );
+        if (data.rowCount) {
+            return data.rows[0];
+        }
+        return undefined;
+    }
+
+    /**
      * Requête l'accès aux commentaires d'un article via son id'
-     * Response : retourne la data de tout les commentaires lié à l'article
+     * * Response : retourne la data de tout les commentaires lié à l'article
      */
     async getAllCommentsbyArticle(
         article_id: string
@@ -30,7 +46,7 @@ export class CommentsServices {
 
     /**
      * Requête l'accès à un commentaire via son id
-     * Response : retourne la data du commentaire
+     * * Response : retourne la data du commentaire
      */
     async getComment(id: string) {
         const data = await client.query(
@@ -46,7 +62,7 @@ export class CommentsServices {
 
     /**
      * Requête la création d'un commentaire'
-     * Response : retourne la data du commentaire crée
+     * * Response : retourne la data du commentaire crée
      */
     async addComment(
         user_id: string,
@@ -65,7 +81,7 @@ export class CommentsServices {
 
     /**
      * Requête la modification d'un commentaire via son id'
-     * Response : retourne la data du commentaire modifié
+     * * Response : retourne la data du commentaire modifié
      */
     async updateComment(
         user_id: string,
@@ -86,7 +102,7 @@ export class CommentsServices {
 
     /**
      * Requête la modification de l'etat d'un commentaire, visible ou non
-     * Response : retourne la data du commentaire avec la valeur deleted_at modifié
+     * * Response : retourne la data du commentaire avec la valeur deleted_at modifié
      */
     async deleteComment(user_id: string, comment_id: string) {
         const data = await client.query(

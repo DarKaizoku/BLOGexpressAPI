@@ -15,7 +15,7 @@ import { TArticleWithComments } from '../types/TArticleWithComments';
 export class ArticlesServices {
     /**
      * Requête l'accès aux articles
-     * Response : retourne les datas des articles
+     * * Response : retourne les datas des articles
      */
     async allArticles(): Promise<TArticles[] | undefined> {
         const articles = await client.query(
@@ -31,7 +31,7 @@ export class ArticlesServices {
 
     /**
      * Requête l'accès à un article via l'id en params
-     * Response : retourne les datas de l'article
+     * * Response : retourne les datas de l'article
      */
     async oneArticle(articleId: string): Promise<TArticles | undefined> {
         const askedArticle = await client.query(
@@ -48,7 +48,7 @@ export class ArticlesServices {
 
     /**
      * Requête l'accès à l'article via l'id en params ainsi que tout les commentaires lié à lui
-     * Response : retourne les datas de l'article, et le name et content des commentaires
+     * * Response : retourne les datas de l'article, et le name et content des commentaires
      */
     async articleComment(
         articleId: string
@@ -96,7 +96,7 @@ export class ArticlesServices {
 
     /**
      * Requête l'ajout d'un article
-     * Response : retourne les datas de l'article crée
+     * * Response : retourne les datas de l'article crée
      */
     async postArticle(
         titre: string,
@@ -117,7 +117,7 @@ export class ArticlesServices {
 
     /**
      * Requête la modification d'un article via son id
-     * Response : retourne les datas de l'article modifié
+     * * Response : retourne les datas de l'article modifié
      */
     async putArticle(
         articleId: string,
@@ -139,7 +139,7 @@ export class ArticlesServices {
 
     /**
      * Requête l'id d'un user sur un article
-     * Response : retourne le user_id
+     * * Response : retourne le user_id
      */
     async selectUserArticle(articleId: string): Promise<TArticles | undefined> {
         const select = await client.query(
@@ -156,7 +156,7 @@ export class ArticlesServices {
 
     /**
      * Requête la modification de l'etat d'un article, visible ou non
-     * Response : retourne la data de l'article avec la valeur deleted_at modifié
+     * * Response : retourne la data de l'article avec la valeur deleted_at modifié
      */
     async deleteArticle(
         articleId: string,
