@@ -6,6 +6,7 @@ import usersRouter from './routes/usersRouter';
 
 import articlesRouter from './routes/articlesRouter';
 import commentsRouter from './routes/commentsRouter';
+import { EStatus } from './constant/enum';
 
 declare global {
         namespace Express {
