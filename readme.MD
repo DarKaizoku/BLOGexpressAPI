@@ -1,7 +1,6 @@
-# Template node Express typescript
+# Backend Blog
 
-install dependencies
-`npm i`
+Brief par Arnaud et Kévin.
 
-start dev server
-`npm start`
+Une partie du Bonus 1 est présent nativement ('renvoyer un post via son id, en incluant les commentaires associés').
+La deuxième partie ('creer un role user et admin. L'admin a tout les droits.') est présente sur la branch admin.

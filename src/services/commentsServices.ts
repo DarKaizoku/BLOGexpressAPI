@@ -89,7 +89,7 @@ export class CommentsServices {
         comment_id: string
     ): Promise<TComments | undefined> {
         const data = await client.query(
-            'UPDATE comments SET content = $2,date=current_timestamp WHERE id = $3 AND user_id = $1 RETURNING *',
+            'UPDATE comments SET content = $2,date = CURRENT_TIMESTAMP WHERE id = $3 AND user_id = $1 RETURNING *',
             [user_id, content, comment_id]
         );
 

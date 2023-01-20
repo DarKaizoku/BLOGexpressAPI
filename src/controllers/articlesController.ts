@@ -110,18 +110,18 @@ export class ArticlesController {
             );
 
             if (getOneArticle === undefined) {
-                res.status(404).json({
+                return res.status(404).json({
                     status: 'FAIL',
-                    message: 'Aucun article trouvé',
+                    message: 'Aucun article ou commentaire trouvé',
                     data: null,
                 });
-            } else {
-                res.status(200).json({
-                    status: 'SUCCESS',
-                    message: "Voici l'article demandé",
-                    data: getOneArticle,
-                });
             }
+
+            res.status(200).json({
+                status: 'SUCCESS',
+                message: "Voici l'article demandé",
+                data: getOneArticle,
+            });
         } catch (err) {
             console.log(err);
             res.status(500).json({
