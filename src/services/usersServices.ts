@@ -11,7 +11,7 @@ import TUsers from '../types/TUsers';
 export class UsersServices {
     /**
      * Requête l'accès aux name des user
-     * Response : retourne le name des users sous forme de tableau
+     * * Response : retourne le name des users sous forme de tableau
      */
     async getNames(): Promise<string[] | undefined> {
         const data: QueryResult<TUsers> = await client.query(
@@ -27,7 +27,7 @@ export class UsersServices {
 
     /**
      * Requête l'ajout d'un nouvel user
-     * Response : retourne le name et le password du user avant hashage
+     * * Response : retourne le name et le password du user avant hashage
      */
     async addUser(name: string, password: string): Promise<string | undefined> {
         const data: QueryResult<TUsers> = await client.query(
@@ -43,7 +43,7 @@ export class UsersServices {
 
     /**
      * Requête l'accès aux user via le name
-     * Response : retourne la data du user demandé
+     * * Response : retourne la data du user demandé
      */
     async getDataUserbyName(name: string): Promise<TUsers | undefined> {
         const data: QueryResult<TUsers> = await client.query(

@@ -53,7 +53,7 @@ export class UsersController {
             }
         } catch (error) {
             console.log(error);
-            res.status(404).json({
+            res.status(500).json({
                 status: 'ERROR',
                 message: '!!! ERREUR !!!',
             });
@@ -93,7 +93,7 @@ export class UsersController {
                     } else {
                         res.status(401).json({
                             status: 'FAIL',
-                            message: `Le mot de passe de corresponnd pas !!`,
+                            message: `Le mot de passe ne corresponnd pas !!`,
                         });
                     }
                 });

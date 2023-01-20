@@ -17,8 +17,19 @@ export class CommentsController {
         async getArticleWithComments(req: Request, res: Response) {
                 const articleId: string = req.params.id;
 
+                if (Number.isNaN(Number(articleId))) {
+                        return res.status(404).json({
+                                status: 'FAIL',
+                                message: 'Type de donnée attendu incorrect, type attendu Number',
+                                data: null,
+                        });
+                }
+
                 try {
-                        const dataArticle =
+                        const dataArticle = await commentsServices.getArticle(
+                                articleId
+                        );
+                        const dataComment =
                                 await commentsServices.getAllCommentsbyArticle(
                                         articleId
                                 );
@@ -55,6 +66,14 @@ export class CommentsController {
                 const content = req.body.content;
                 const article_id = req.params.id;
 
+                if (Number.isNaN(Number(article_id))) {
+                        return res.status(404).json({
+                                status: 'FAIL',
+                                message: 'Type de donnée attendu incorrect, type attendu Number',
+                                data: null,
+                        });
+                }
+
                 if (article_id === undefined || content === undefined) {
                         res.status(400).json({
                                 status: 'FAIL',
@@ -63,6 +82,19 @@ export class CommentsController {
                         });
                 } else {
                         try {
+                                const articleExist =
+                                        await commentsServices.getArticle(
+                                                article_id
+                                        );
+
+                                if (articleExist === undefined) {
+                                        return res.status(404).json({
+                                                status: 'FAIL',
+                                                message: 'Aucun article trouvé',
+                                                data: null,
+                                        });
+                                }
+
                                 const dataComment =
                                         await commentsServices.addComment(
                                                 user_id,
@@ -209,7 +241,6 @@ export class CommentsController {
                                         user_id,
                                         comment_id
                                 );
-                        console.log(dataArchived);
 
                         if (dataArchived) {
                                 res.status(201).json({

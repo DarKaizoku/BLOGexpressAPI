@@ -53,6 +53,13 @@ app.use(function (req, res, next) {
 app.use('/api/articles', articlesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/articles/comments', commentsRouter);
+app.all('*', function (req, res) {
+    res.status(404).json({
+        status: 'FAIL',
+        message: 'Route incorrecte',
+        data: null,
+    });
+});
 
 // Bind express server on port 8080
 app.listen(port, () => {

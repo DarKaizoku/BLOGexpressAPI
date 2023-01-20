@@ -1,6 +1,8 @@
+import { QueryResult } from 'pg';
 import client from '../constant/client';
 import { TArticles } from '../types/TArticles';
 import { TArticleWithComments } from '../types/TArticleWithComments';
+import TUsers from '../types/TUsers';
 
 /**
  * Class permettant les envoies de requête vers la db concernant les articles
@@ -15,10 +17,10 @@ import { TArticleWithComments } from '../types/TArticleWithComments';
 export class ArticlesServices {
     /**
      * Requête l'accès aux articles
-     * Response : retourne les datas des articles
+     * * Response : retourne les datas des articles
      */
     async allArticles(): Promise<TArticles[] | undefined> {
-        const articles = await client.query(
+        const articles: QueryResult<TArticles> = await client.query(
             'SELECT * FROM articles WHERE deleted_at is null'
         );
 
@@ -31,10 +33,10 @@ export class ArticlesServices {
 
     /**
      * Requête l'accès à un article via l'id en params
-     * Response : retourne les datas de l'article
+     * * Response : retourne les datas de l'article
      */
     async oneArticle(articleId: string): Promise<TArticles | undefined> {
-        const askedArticle = await client.query(
+        const askedArticle: QueryResult<TArticles> = await client.query(
             'SELECT * FROM articles WHERE id = $1 AND deleted_at is null',
             [articleId]
         );
@@ -48,7 +50,7 @@ export class ArticlesServices {
 
     /**
      * Requête l'accès à l'article via l'id en params ainsi que tout les commentaires lié à lui
-     * Response : retourne les datas de l'article, et le name et content des commentaires
+     * * Response : retourne les datas de l'article, et le name et content des commentaires
      */
     async articleComment(
         articleId: string
@@ -96,14 +98,14 @@ export class ArticlesServices {
 
     /**
      * Requête l'ajout d'un article
-     * Response : retourne les datas de l'article crée
+     * * Response : retourne les datas de l'article crée
      */
     async postArticle(
         titre: string,
         content: string,
         userId: string
     ): Promise<TArticles | undefined> {
-        const postArticle = await client.query(
+        const postArticle: QueryResult<TArticles> = await client.query(
             'INSERT INTO articles (titre, content, user_id) VALUES ($1, $2, $3) RETURNING *',
             [titre, content, userId]
         );
@@ -117,7 +119,7 @@ export class ArticlesServices {
 
     /**
      * Requête la modification d'un article via son id
-     * Response : retourne les datas de l'article modifié
+     * * Response : retourne les datas de l'article modifié
      */
     async putArticle(
         articleId: string,
@@ -125,7 +127,7 @@ export class ArticlesServices {
         content: string,
         userId: number
     ): Promise<TArticles | undefined> {
-        const changes = await client.query(
+        const changes: QueryResult<TArticles> = await client.query(
             'UPDATE articles SET titre = $1, content = $2, date = CURRENT_TIMESTAMP WHERE id = $3 AND user_id = $4 RETURNING *',
             [titre, content, articleId, userId]
         );
@@ -139,10 +141,10 @@ export class ArticlesServices {
 
     /**
      * Requête l'id d'un user sur un article
-     * Response : retourne le user_id
+     * * Response : retourne le user_id
      */
     async selectUserArticle(articleId: string): Promise<TArticles | undefined> {
-        const select = await client.query(
+        const select: QueryResult<TArticles> = await client.query(
             'SELECT user_id FROM articles WHERE id = $1 AND deleted_at IS NULL',
             [articleId]
         );
@@ -156,13 +158,13 @@ export class ArticlesServices {
 
     /**
      * Requête la modification de l'etat d'un article, visible ou non
-     * Response : retourne la data de l'article avec la valeur deleted_at modifié
+     * * Response : retourne la data de l'article avec la valeur deleted_at modifié
      */
     async deleteArticle(
         articleId: string,
         userId: number
-    ): Promise<TArticles[] | undefined> {
-        const del = await client.query(
+    ): Promise<TArticles | undefined> {
+        const del: QueryResult<TArticles> = await client.query(
             'UPDATE articles SET deleted_at = CURRENT_TIMESTAMP WHERE id = $1 AND user_id = $2 RETURNING *',
             [articleId, userId]
         );
